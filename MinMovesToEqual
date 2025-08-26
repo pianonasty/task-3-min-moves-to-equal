@@ -1,0 +1,61 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class MinMovesToEqual {
+
+    public static void main(String[] args) {
+        // Проверка наличия аргумента командной строки
+        if (args.length < 1) {
+            System.out.println("Ошибка: укажите файл с числами");
+            return;
+        }
+        
+        List<Integer> numbers = new ArrayList<>();
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader(args[0]))) {
+            String line;
+            // Чтение чисел из файла
+            while ((line = reader.readLine()) != null) {
+                numbers.add(Integer.parseInt(line.trim()));
+            }
+        } catch (IOException e) {
+            System.out.println("Ошибка чтения файла: " + e.getMessage());
+            return;
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка: в файле должны быть целые числа");
+            return;
+        }
+        
+        // Если массив пустой
+        if (numbers.isEmpty()) {
+            System.out.println(0);
+            return;
+        }
+        
+        // Сортируем массив для нахождения медианы
+        Collections.sort(numbers);
+        
+        // Вычисляем медиану (середина отсортированного массива)
+        int median = numbers.get(numbers.size() / 2);
+        
+        // Считаем общее количество ходов
+        int totalMoves = 0;
+        for (int num : numbers) {
+            totalMoves += Math.abs(num - median);
+        }
+        
+        // Проверяем ограничение в 20 ходов
+        if (totalMoves <= 20) {
+            System.out.println(totalMoves);
+        } else {
+            System.out.println("20 ходов недостаточно для приведения всех элементов массива к одному числу");
+        }
+    }
+}
+
+
+// Решение основано на фундаментальном принципе статистики: медиана минимизирует сумму абсолютных отклонений. После долгих поисков оптимального подхода я обнаружила, что эта классическая оптимизационная задача имеет математическое решение через медиану.
