@@ -1,61 +1,54 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 
 public class MinMovesToEqual {
-
     public static void main(String[] args) {
-        // Проверка наличия аргумента командной строки
-        if (args.length < 1) {
-            System.out.println("Ошибка: укажите файл с числами");
+        if (args.length == 0) {
+            System.out.println("Need file name");
             return;
         }
-        
-        List<Integer> numbers = new ArrayList<>();
-        
-        try (BufferedReader reader = new BufferedReader(new FileReader(args[0]))) {
-            String line;
-            // Чтение чисел из файла
-            while ((line = reader.readLine()) != null) {
-                numbers.add(Integer.parseInt(line.trim()));
+
+        try {
+            BufferedReader counter = new BufferedReader(new FileReader(args[0]));
+            int count = 0;
+            while (counter.readLine() != null) {
+                count++;
             }
-        } catch (IOException e) {
-            System.out.println("Ошибка чтения файла: " + e.getMessage());
-            return;
-        } catch (NumberFormatException e) {
-            System.out.println("Ошибка: в файле должны быть целые числа");
-            return;
-        }
-        
-        // Если массив пустой
-        if (numbers.isEmpty()) {
-            System.out.println(0);
-            return;
-        }
-        
-        // Сортируем массив для нахождения медианы
-        Collections.sort(numbers);
-        
-        // Вычисляем медиану (середина отсортированного массива)
-        int median = numbers.get(numbers.size() / 2);
-        
-        // Считаем общее количество ходов
-        int totalMoves = 0;
-        for (int num : numbers) {
-            totalMoves += Math.abs(num - median);
-        }
-        
-        // Проверяем ограничение в 20 ходов
-        if (totalMoves <= 20) {
-            System.out.println(totalMoves);
-        } else {
-            System.out.println("20 ходов недостаточно для приведения всех элементов массива к одному числу");
+            counter.close();
+
+            int[] numbers = new int[count];
+            
+            BufferedReader reader = new BufferedReader(new FileReader(args[0]));
+            for (int i = 0; i < count; i++) {
+                String line = reader.readLine();
+                numbers[i] = Integer.parseInt(line.trim());
+            }
+            reader.close();
+
+            if (numbers.length == 0) {
+                System.out.println(0);
+                return;
+            }
+
+            Arrays.sort(numbers);
+            
+            int middle = numbers.length / 2;
+            int median = numbers[middle];
+            
+            int moves = 0;
+            for (int i = 0; i < numbers.length; i++) {
+                moves += Math.abs(numbers[i] - median);
+            }
+            
+            if (moves <= 20) {
+                System.out.println(moves);
+            } else {
+                System.out.println("20 ходов недостаточно");
+            }
+            
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
-}
-
-
-// Решение основано на фундаментальном принципе статистики: медиана минимизирует сумму абсолютных отклонений. После долгих поисков оптимального подхода я обнаружила, что эта классическая оптимизационная задача имеет математическое решение через медиану.
+}едиана минимизирует сумму абсолютных отклонений. После долгих поисков оптимального подхода я обнаружила, что эта классическая оптимизационная задача имеет математическое решение через медиану.
