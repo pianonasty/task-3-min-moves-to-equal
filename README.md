@@ -1,4 +1,4 @@
-# task-3-min-moves-to-equal
+# task-4-min-moves-to-equal
 Min Moves To Equalize Arrays
 
 A Java program that calculates the minimum number of operations required to make all elements of an array equal, where each operation (move) can increment or decrement an element by 1.
